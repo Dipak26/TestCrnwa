@@ -29,6 +29,11 @@ const postcssNormalize = require('postcss-normalize');
 
 const appPackageJson = require(paths.appPackageJson);
 
+const reactNativeWebRefreshControl = path.resolve('node_modules/react-native-web-refresh-control/');
+const reactRouterDom = path.resolve('node_modules/react-router-dom/');
+const reactRouterNative = path.resolve('node_modules/react-router-native/');
+const modelReactNativeWeb = path.resolve('node_modules/modal-enhanced-react-native-web/');
+
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
@@ -363,7 +368,7 @@ module.exports = function(webpackEnv) {
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
             {
               test: /\.(js|mjs|jsx|ts|tsx)$/,
-              include: [paths.appSrc, /node_modules\/react-native-web-refresh-control/],
+              include: [paths.appSrc, reactNativeWebRefreshControl, reactRouterDom, reactRouterNative, modelReactNativeWeb],
               loader: require.resolve('babel-loader'),
               options: {
                 customize: require.resolve(

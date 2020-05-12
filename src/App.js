@@ -9,16 +9,18 @@ import {
   Animated,
   Easing,
   ActivityIndicator,
-  Modal,
+  Modal as RNModal,
   // RefreshControl,
   SafeAreaView
 } from 'react-native';
 import { RefreshControl } from 'react-native-web-refresh-control'
+import Modal  from 'modal-enhanced-react-native-web'
+
 
 import logo from './logo.png';
 
 
-// import Routes from '../src/router/Routes';
+import Routes from '../src/router/Routes';
 
 
 function wait(timeout) {
@@ -42,13 +44,13 @@ class App extends Component {
   
   
   setModalVisible = (visible) => {
-    if(Platform.OS !== "web"){
+    // if(Platform.OS !== "web"){
        this.setState({ modalVisible: visible });
-    }else{
-        if(visible){
-        alert("Modal not supported in web")
-        }
-    }
+    // }else{
+    //     if(visible){
+    //     alert("Modal not supported in web")
+    //     }
+    // }
   };
 
   onRefresh =() => {
@@ -77,12 +79,33 @@ class App extends Component {
          <ScrollView
         contentContainerStyle={styles.scrollView}
         refreshControl={
-         Platform !== 'web' ? <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} /> :
          <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh}/>
         }>
                   <View style={styles.container}>
         <ActivityIndicator animating={true} color="red" size="large"/>
-        {Platform.OS !=='web' && <Modal
+        {Platform.OS !=='web' ? <RNModal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          alert("Modal has been closed.");
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Hello World!</Text>
+
+            <TouchableHighlight
+              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+              onPress={() => {
+                this.setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </RNModal> : <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -142,10 +165,10 @@ class App extends Component {
     );
   }
 
-  render2() {
+  render1() {
     return (
         <View>
-            {/* <Routes/> */}
+            <Routes/>
         </View>
     );
   }
